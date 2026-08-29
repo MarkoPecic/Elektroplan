@@ -38,7 +38,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="image" href="assets/img/hero-sky.jpg" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/styles.css?v=2">
 
   <!-- Structured data (Google rich results + AI agenti) ------------------- -->
   <script type="application/ld+json">
@@ -799,28 +799,33 @@
               </div>
             </div>
           </div>
-          <form data-action="submit" class="kontakt__form">
+          <form data-action="submit" class="kontakt__form" method="POST" action="https://formsubmit.co/info@elektroplan.rs" novalidate="novalidate">
+            <input type="hidden" name="_subject" value="Novi upit sa sajta — Elektroplan">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" class="kontakt__honey">
             <div class="kontakt__box-2">
               <label for="ime" class="kontakt__field-label">Ime i prezime</label>
-              <input id="ime" name="ime" type="text" required="" placeholder="Marko Marković" class="kontakt__ime">
+              <input id="ime" name="ime" type="text" required="required" placeholder="Marko Marković" class="kontakt__ime">
             </div>
             <div class="kontakt__box-2">
               <label for="telefon" class="kontakt__field-label">Telefon</label>
-              <input id="telefon" name="telefon" type="tel" required="" placeholder="06X XXX XXXX" class="kontakt__ime">
+              <input id="telefon" name="telefon" type="tel" required="required" placeholder="06X XXX XXXX" class="kontakt__ime">
             </div>
             <div class="kontakt__box-2">
               <label for="mesto" class="kontakt__field-label">Mesto</label>
-              <input id="mesto" name="mesto" type="text" placeholder="Kruševac" class="kontakt__ime">
+              <input id="mesto" name="mesto" type="text" required="required" placeholder="Kruševac" class="kontakt__ime">
             </div>
             <div class="kontakt__box-2">
-              <label for="poruka" class="kontakt__field-label">Poruka <span class="kontakt__label-3">(opciono)</span></label>
-              <textarea id="poruka" name="poruka" rows="3" placeholder="Godišnja potrošnja, tip krova, mesto…" class="kontakt__poruka"></textarea>
+              <label for="poruka" class="kontakt__field-label">Poruka <span class="kontakt__label-3">(potrošnja i tip krova)</span></label>
+              <textarea id="poruka" name="poruka" rows="3" required="required" minlength="15" placeholder="Godišnja potrošnja u kWh, tip i orijentacija krova…" class="kontakt__poruka"></textarea>
             </div>
             <button data-btn="" type="submit" class="kontakt__btn">
               <span data-swap="" class="nav__swap"><span data-l1="" class="nav__l1">Pošalji upit</span><span data-l2="" aria-hidden="true" class="nav__l2">Pošalji upit</span></span>
               <span data-btn-arrow="" class="kontakt__btn-arrow">→</span>
             </button>
-            <p class="kontakt__text-2">Podatke koristimo isključivo da ti odgovorimo na upit. Demo forma — ne šalje ništa.</p>
+            <p data-form-status="" role="status" aria-live="polite" class="kontakt__status"></p>
+            <p class="kontakt__text-2">Sva polja su obavezna — bez potrošnje i tipa krova ne možemo da izračunamo tačan proračun. Podatke koristimo isključivo da ti odgovorimo na upit.</p>
           </form>
         </div>
       </section>
@@ -881,6 +886,6 @@
 
   <!-- Skripte ------------------------------------------------------------- -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/main.js?v=2" defer></script>
 </body>
 </html>

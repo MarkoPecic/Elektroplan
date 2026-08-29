@@ -54,11 +54,21 @@ layout), 620px i 560px (tipografija). Media query blokovi su na kraju
 
 1. **Domen** — zameni `https://www.elektroplan.rs` u `index.html` (canonical,
    OG, JSON-LD), `robots.txt`, `sitemap.xml`, `llms.txt` ako je domen drugi.
-2. **Kontakt forma** — trenutno je demo, ne šalje ništa. U `main.js`, funkcija
-   `initForm()`: zameni telo `fetch` POST-om ka svom endpointu, Formspree,
-   Netlify Forms ili PHP skripti.
-3. **Slike** — konvertuj `.jpg` u `.webp` ili `.avif` i posluži ih kroz
-   `<picture>`; zadrži `fetchpriority="high"` samo na hero slici.
+2. **Kontakt forma — jedan klik za aktivaciju.** Forma šalje upite na
+   `info@elektroplan.rs` preko FormSubmit-a (`action` u `index.html`:
+   `https://formsubmit.co/info@elektroplan.rs`). Prvi put kada se forma pošalje
+   sa živog domena, FormSubmit pošalje mejl za potvrdu na tu adresu — klikni
+   link u njemu i posle toga svaki upit stiže direktno u inbox. Nema backenda,
+   nema naloga, radi i na statičkom hostingu.
+   Sva polja (ime, telefon, mesto, poruka) su obavezna, poruka mora imati
+   najmanje 15 znakova, pa prazni upiti ne mogu da prođu. Skriveno `_honey`
+   polje filtrira botove.
+   Za drugi servis (Formspree, Netlify Forms, sopstveni PHP) dovoljno je
+   zameniti `action` na formi — JS sam prilagođava AJAX poziv.
+3. **Slike** — hero slike su smanjene na 2400px i rekompresovane (5,5 MB → 326 KB
+   po slici, ukupno ~11,9 MB → 1,7 MB). Za još manji transfer konvertuj `.jpg` u
+   `.webp`/`.avif` i posluži ih kroz `image-set()`; zadrži `fetchpriority="high"`
+   samo na hero slici.
 4. **Geo koordinate** — u JSON-LD i `geo.position` meta tagovima stoje
    koordinate centra Kruševca. Zameni tačnim koordinatama kancelarije.
 5. **Google Business Profile** — obavezno, detalji u sekciji SEO ispod.

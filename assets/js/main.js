@@ -58,19 +58,69 @@
   }
 
   /* 2. Hotspotovi --------------------------------------------------------- */
+  /* Sekvenca: otvaranje = linija se iscrtava od kruga, pa tek onda tekst.
+     Zatvaranje = prvo nestane tekst, pa se linija uvuče natrag ka krugu. */
   function initHotspots() {
-    document.querySelectorAll('[data-action="hotspot"]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var root = btn.closest('[data-hotspot]');
-        if (!root) return;
-        var line = root.querySelector('[data-hs-line]');
-        var label = root.querySelector('[data-hs-label]');
-        var open = root.dataset.open === '1';
-        root.dataset.open = open ? '0' : '1';
-        if (line) line.style.strokeDashoffset = open ? '330' : '0';
-        if (label) {
-          label.style.opacity = open ? '0' : '1';
-          label.style.transform = open ? 'translateY(8px)' : 'translateY(0)';
+    var LINE_IN = 0.7, LINE_OUT = 0.6, TEXT_IN = 0.4, TEXT_OUT = 0.3,
+        TEXT_IN_DELAY = 0.42, LINE_OUT_DELAY = 0.2;
+
+    document.querySelectorAll('[data-hotspot]').forEach(function (root) {
+      var btn = root.querySelector('[data-action="hotspot"]');
+      var line = root.querySelector('[data-hs-line]');
+      var label = root.querySelector('[data-hs-label]');
+      if (!btn) return;
+
+      var len = 330;
+      if (line && line.getTotalLength) {
+        try { len = Math.ceil(line.getTotalLength()); } catch (err) {}
+      }
+      if (line) {
+        line.style.strokeDasharray = len;
+        line.style.strokeDashoffset = len;
+      }
+      if (label) {
+        label.style.opacity = '0';
+        label.style.transform = 'translateY(6px)';
+      }
+
+      function set(open) {
+        root.dataset.open = open ? '1' : '0';
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (reduceMotion) {
+          if (line) { line.style.transition = 'none'; line.style.strokeDashoffset = open ? 0 : len; }
+          if (label) { label.style.transition = 'none'; label.style.opacity = open ? '1' : '0'; label.style.transform = 'translateY(0)'; }
+          return;
+        }
+        if (open) {
+          if (line) {
+            line.style.transition = 'stroke-dashoffset ' + LINE_IN + 's cubic-bezier(0.4,0,0.2,1)';
+            line.style.strokeDashoffset = 0;
+          }
+          if (label) {
+            label.style.transition = 'opacity ' + TEXT_IN + 's ease ' + TEXT_IN_DELAY + 's, transform ' +
+              TEXT_IN + 's cubic-bezier(0.2,0.8,0.2,1) ' + TEXT_IN_DELAY + 's';
+            label.style.opacity = '1';
+            label.style.transform = 'translateY(0)';
+          }
+        } else {
+          if (label) {
+            label.style.transition = 'opacity ' + TEXT_OUT + 's ease, transform ' + TEXT_OUT + 's ease';
+            label.style.opacity = '0';
+            label.style.transform = 'translateY(6px)';
+          }
+          if (line) {
+            line.style.transition = 'stroke-dashoffset ' + LINE_OUT + 's cubic-bezier(0.4,0,0.2,1) ' + LINE_OUT_DELAY + 's';
+            line.style.strokeDashoffset = len;
+          }
+        }
+      }
+
+      btn.setAttribute('aria-expanded', 'false');
+      btn.addEventListener('click', function () { set(root.dataset.open !== '1'); });
+      btn.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+          e.preventDefault();
+          set(root.dataset.open !== '1');
         }
       });
     });
@@ -202,46 +252,106 @@
     nodes.forEach(function (n) { io.observe(n); });
   }
 
-  /* 6. Hover dugmića (label swap) ----------------------------------------- */
+  /* 6. Hover dugmića -------------------------------------------------------
+     Label swap je u CSS-u (.nav__l1 / .nav__l2 + [data-btn]:hover), pa radi i
+     bez GSAP-a. Ovde ostaje samo rotacija strelice. */
   function initButtonHover() {
     if (reduceMotion) return;
-    var gsap = window.gsap;
-    if (!gsap) return setTimeout(initButtonHover, 120);
 
     document.querySelectorAll('[data-btn]').forEach(function (el) {
       if (el.dataset.btnBound) return;
-      el.dataset.btnBound = '1';
-      var l1 = el.querySelector('[data-l1]');
-      var l2 = el.querySelector('[data-l2]');
       var arrow = el.querySelector('[data-btn-arrow]');
-      var ease = 'power3.inOut';
-
+      if (!arrow) return;
+      el.dataset.btnBound = '1';
+      arrow.style.transition = 'transform 0.5s cubic-bezier(0.33, 1, 0.68, 1)';
       el.addEventListener('mouseenter', function () {
-        if (l1) gsap.to([l1, l2], { yPercent: -100, duration: 0.5, ease: ease });
-        if (arrow) gsap.to(arrow, { rotate: 45, duration: 0.5, ease: 'power3.out' });
+        arrow.style.transform = 'rotate(45deg)';
       });
       el.addEventListener('mouseleave', function () {
-        if (l1) gsap.to([l1, l2], { yPercent: 0, duration: 0.5, ease: ease });
-        if (arrow) gsap.to(arrow, { rotate: 0, duration: 0.5, ease: 'power3.out' });
+        arrow.style.transform = 'rotate(0deg)';
       });
     });
   }
 
   /* 7. Kontakt forma ------------------------------------------------------ */
-  /* Demo: nema backenda. Za produkciju zameni telo handlera pozivom ka
-     svom endpointu (fetch POST) ili servisu tipa Formspree / Netlify Forms. */
+  /* Šalje na FormSubmit (AJAX endpoint iz form action). Prvi put kada se
+     forma pošalje, FormSubmit šalje mejl za aktivaciju na info@elektroplan.rs
+     — treba kliknuti link u tom mejlu, posle toga upiti stižu automatski.
+     Za drugi servis (Formspree, Netlify Forms, sopstveni PHP) dovoljno je
+     zameniti action u index.html. */
   function initForm() {
     var form = document.querySelector('[data-action="submit"]');
     if (!form) return;
+    var btn = form.querySelector('button[type="submit"]');
+    var status = form.querySelector('[data-form-status]');
+    var fields = Array.prototype.slice.call(form.querySelectorAll('[required]'));
+
+    function say(msg, kind) {
+      if (!status) return;
+      status.textContent = msg || '';
+      status.dataset.kind = kind || '';
+    }
+
+    function label(el) {
+      var l = form.querySelector('label[for="' + el.id + '"]');
+      return l ? l.textContent.replace(/\(.*?\)/, '').trim() : 'Polje';
+    }
+
+    function validate(el) {
+      var v = (el.value || '').trim();
+      var msg = '';
+      if (!v) msg = label(el) + ' je obavezno polje.';
+      else if (el.id === 'telefon' && v.replace(/\D/g, '').length < 8) msg = 'Unesi ispravan broj telefona.';
+      else if (el.minLength > 0 && v.length < el.minLength) msg = 'Opiši potrošnju i tip krova — bez toga ne možemo da izračunamo proračun.';
+      el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+      el.dataset.invalid = msg ? '1' : '';
+      return msg;
+    }
+
+    fields.forEach(function (el) {
+      el.addEventListener('blur', function () { validate(el); });
+      el.addEventListener('input', function () {
+        if (el.dataset.invalid) { validate(el); if (!el.dataset.invalid) say(''); }
+      });
+    });
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      var btn = form.querySelector('button[type="submit"]');
-      if (!btn) return;
-      var l1 = btn.querySelector('[data-l1]');
-      var l2 = btn.querySelector('[data-l2]');
-      if (l1) l1.textContent = 'Primljeno — zovemo te';
-      if (l2) l2.textContent = 'Primljeno — zovemo te';
-      btn.disabled = true;
+      var firstError = '';
+      var firstEl = null;
+      fields.forEach(function (el) {
+        var m = validate(el);
+        if (m && !firstError) { firstError = m; firstEl = el; }
+      });
+      if (firstError) {
+        say(firstError, 'error');
+        if (firstEl) firstEl.focus();
+        return;
+      }
+
+      var l1 = btn && btn.querySelector('[data-l1]');
+      var l2 = btn && btn.querySelector('[data-l2]');
+      function setLabel(t) { if (l1) l1.textContent = t; if (l2) l2.textContent = t; }
+
+      if (btn) btn.disabled = true;
+      setLabel('Šaljem…');
+      say('');
+
+      var data = new FormData(form);
+      var endpoint = form.getAttribute('action').replace('formsubmit.co/', 'formsubmit.co/ajax/');
+
+      fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } })
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(r); })
+        .then(function () {
+          setLabel('Primljeno — zovemo te');
+          say('Upit je poslat. Odgovaramo istog radnog dana.', 'ok');
+          form.reset();
+        })
+        .catch(function () {
+          if (btn) btn.disabled = false;
+          setLabel('Pošalji upit');
+          say('Slanje nije uspelo. Pozovi 060/086-26-11 ili piši na info@elektroplan.rs.', 'error');
+        });
     });
   }
 

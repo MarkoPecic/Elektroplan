@@ -44,6 +44,7 @@ body {
 }
 
 img, svg { max-width: 100%; }
+.hero__icon { max-width: none; }
 
 a { color: var(--color-navy); text-decoration: none; transition: color 0.3s ease; }
 a:hover { color: var(--color-ink); }
@@ -162,19 +163,31 @@ input, textarea { font: inherit; outline-color: var(--color-sky); }
   height: 1.45em;
 }
 
-.nav__l1 {
+.nav__l1,
+.nav__l2 {
   display: block;
   line-height: 1.45em;
   white-space: nowrap;
+  transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 .nav__l2 {
   position: absolute;
   left: 0;
-  top: 1.45em;
-  display: block;
-  line-height: 1.45em;
-  white-space: nowrap;
+  top: 100%;
+}
+
+[data-btn]:hover .nav__l1,
+[data-btn]:hover .nav__l2 {
+  transform: translateY(-100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav__l1,
+  .nav__l2 { transition: none; }
+  [data-btn]:hover .nav__l1,
+  [data-btn]:hover .nav__l2 { transform: none; }
+  [data-btn]:hover .nav__l2 { opacity: 0; }
 }
 
 .nav__nav-right {
@@ -373,13 +386,14 @@ input, textarea { font: inherit; outline-color: var(--color-sky); }
   position: absolute;
   left: 0;
   bottom: 0;
+  width: 220px;
+  height: 130px;
   overflow: visible;
   pointer-events: none;
 }
 
 .hero__hs-line {
   stroke-dashoffset: 330;
-  transition: stroke-dashoffset 0.7s cubic-bezier(0.4,0,0.2,1) 0.22s;
 }
 
 .hero__hs-label {
@@ -392,8 +406,7 @@ input, textarea { font: inherit; outline-color: var(--color-sky); }
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.2,0.8,0.2,1);
+  transform: translateY(6px);
 }
 
 .hero__value {
@@ -1677,6 +1690,32 @@ input, textarea { font: inherit; outline-color: var(--color-sky); }
   font-size: 11.5px;
   line-height: 1.5;
   color: rgba(255,255,255,0.45);
+}
+
+.kontakt__honey {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.kontakt__status {
+  margin: 0;
+  min-height: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.7);
+}
+
+.kontakt__status[data-kind="error"] { color: #ffb4a8; }
+.kontakt__status[data-kind="ok"] { color: #a8f0c6; }
+
+.kontakt__ime[data-invalid="1"],
+.kontakt__poruka[data-invalid="1"] {
+  border-color: rgba(255,140,120,0.75);
+  background: rgba(255,120,100,0.08);
 }
 
 
