@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://www.elektroplan.rs/</loc>
+    <lastmod>2026-08-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.elektroplan.rs/assets/img/hero-sky.jpg</image:loc>
+      <image:title>Solarni paneli na krovu kuće, Kruševac</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.elektroplan.rs/assets/img/projekat-krusevac.jpg</image:loc>
+      <image:title>Solarna elektrana 10 kWp, Kruševac</image:title>
+    </image:image>
+  </url>
+</urlset>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 80" width="340" height="80" role="img" aria-label="Elektroplan Kruševac">
+  <g>
+    <path d="M37 3 L7 45 H23 L17 77 L47 31 H29 Z" fill="#2FB3EA"></path>
+    <path d="M37 3 L7 45 H23 L21 58 L31 31 H25 Z" fill="#0C2440"></path>
+  </g>
+  <text x="74" y="42" font-family="Manrope, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="42" font-weight="700" letter-spacing="-1" fill="#FFFFFF">Elektroplan</text>
+  <text x="76" y="64" font-family="Manrope, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15" font-weight="500" letter-spacing="3.9" fill="#7FC9EE">KRUŠEVAC</text>
+</svg>
