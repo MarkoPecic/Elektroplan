@@ -47,7 +47,7 @@ img, svg { max-width: 100%; }
 .hero__icon { max-width: none; }
 
 a { color: var(--color-navy); text-decoration: none; transition: color 0.3s ease; }
-a:hover { color: var(--color-ink); }
+a:not([data-btn]):hover { color: var(--color-ink); }
 
 button { font: inherit; }
 
