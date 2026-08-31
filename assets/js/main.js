@@ -7,7 +7,7 @@
      4. FAQ akordeon
      5. Brojači u sekciji "O nama"
      6. Hover animacija dugmića (GSAP, opciono)
-     7. Kontakt forma (demo — bez backenda)
+     7. Kontakt forma (Web3Forms / FormSubmit)
    Svi hookovi u HTML-u su data-atributi: data-action, data-slider, data-faq…
    ========================================================================== */
 (function () {
@@ -286,6 +286,22 @@
     var btn = form.querySelector('button[type="submit"]');
     var status = form.querySelector('[data-form-status]');
     var fields = Array.prototype.slice.call(form.querySelectorAll('[required]'));
+    var oneOf = Array.prototype.slice.call(form.querySelectorAll('[data-one-of="kontakt"]'));
+
+    function oneOfFilled() {
+      return oneOf.some(function (el) { return (el.value || '').trim() !== ''; });
+    }
+    function oneOfError() {
+      if (!oneOf.length) return '';
+      if (!oneOfFilled()) return 'Ostavi telefon ili mejl, da možemo da ti odgovorimo.';
+      var tel = form.querySelector('#telefon');
+      var mail = form.querySelector('#mejl');
+      var tv = tel ? (tel.value || '').trim() : '';
+      var mv = mail ? (mail.value || '').trim() : '';
+      if (tv && tv.replace(/\D/g, '').length < 8) return 'Unesi ispravan broj telefona.';
+      if (mv && !/^[^@\s]+@[^@\s.]+\.[^@\s]{2,}$/.test(mv)) return 'Unesi ispravnu mejl adresu.';
+      return '';
+    }
 
     function say(msg, kind) {
       if (!status) return;
@@ -309,6 +325,17 @@
       return msg;
     }
 
+    oneOf.forEach(function (el) {
+      el.addEventListener('input', function () {
+        var m = oneOfError();
+        oneOf.forEach(function (o) {
+          o.setAttribute('aria-invalid', m ? 'true' : 'false');
+          o.dataset.invalid = m ? '1' : '';
+        });
+        if (!m) say('');
+      });
+    });
+
     fields.forEach(function (el) {
       el.addEventListener('blur', function () { validate(el); });
       el.addEventListener('input', function () {
@@ -324,6 +351,14 @@
         var m = validate(el);
         if (m && !firstError) { firstError = m; firstEl = el; }
       });
+      if (!firstError) {
+        var oneMsg = oneOfError();
+        if (oneMsg) {
+          firstError = oneMsg;
+          firstEl = oneOf[0];
+          oneOf.forEach(function (o) { o.setAttribute('aria-invalid', 'true'); o.dataset.invalid = '1'; });
+        }
+      }
       if (firstError) {
         say(firstError, 'error');
         if (firstEl) firstEl.focus();

@@ -618,11 +618,17 @@ input, textarea { font: inherit; outline-color: var(--color-sky); }
 }
 
 .onama__box {
-  background: #fff;
-  border: 1px solid rgba(16,20,24,0.07);
-  box-shadow: 0 18px 40px -34px rgba(10,24,38,0.35);
-  border-radius: 16px;
-  padding: 28px 22px;
+  background: transparent;
+  border: 0;
+  border-left: 1px solid rgba(16,20,24,0.12);
+  box-shadow: none;
+  border-radius: 0;
+  padding: 4px 22px 4px 24px;
+}
+
+.onama__box:first-child {
+  border-left: 0;
+  padding-left: 0;
 }
 
 .onama__box-2 {
@@ -1956,3 +1962,55 @@ input, textarea { font: inherit; outline-color: var(--color-sky); }
 @media (min-width: 1440px) {
   .onama__box-3 { grid-template-columns: minmax(0, 2.5fr) minmax(0, 1fr); column-gap: 64px; }
 }
+
+
+/* kontakt: direktan poziv / mejl kao alternativa formi */
+.kontakt__direct {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(255,255,255,0.14);
+}
+.kontakt__pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+}
+@media (max-width: 560px) {
+  .kontakt__pair { grid-template-columns: minmax(0, 1fr); }
+}
+.kontakt__hint {
+  margin: -6px 0 0;
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.5);
+}
+.kontakt__direct-text {
+  font-size: 14px;
+  color: rgba(255,255,255,0.62);
+  margin-right: 2px;
+}
+.kontakt__direct-link,
+.kontakt__direct-link-2 {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 11px 18px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.008em;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+.kontakt__direct-link {
+  background: #fff;
+  color: #101418;
+}
+.kontakt__direct-link:hover { background: rgba(255,255,255,0.88); color: #101418; }
+.kontakt__direct-link-2 {
+  border: 1px solid rgba(255,255,255,0.26);
+  color: #fff;
+}
+.kontakt__direct-link-2:hover { border-color: rgba(255,255,255,0.55); color: #fff; }
