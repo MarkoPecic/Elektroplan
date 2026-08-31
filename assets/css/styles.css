@@ -70,6 +70,8 @@ input, textarea { font: inherit; outline-color: var(--color-sky); }
 
 /* --- Layout / zajedničko ------------------------------------------- */
 
+html, body { overflow-x: clip; }
+
 .base__box {
   max-width: 1440px;
   margin: 0 auto;
@@ -469,6 +471,15 @@ input, textarea { font: inherit; outline-color: var(--color-sky); }
   justify-content: space-between;
   gap: 56px;
   padding: 148px 56px 52px;
+}
+
+@media (min-width: 1400px) {
+  .hero__hero-inner {
+    justify-content: center;
+    gap: clamp(56px, 9vh, 130px);
+    padding-top: clamp(180px, 19vh, 280px);
+    padding-bottom: clamp(52px, 9vh, 120px);
+  }
 }
 
 .hero__box-5 {
@@ -1732,7 +1743,10 @@ input, textarea { font: inherit; outline-color: var(--color-sky); }
 
 .footer__footer {
   margin-top: 20px;
-  border-radius: 30px;
+  margin-inline: calc(50% - 50vw);
+  width: 100vw;
+  max-width: 100vw;
+  border-radius: 0;
   background: var(--color-ink-deep);
   color: #fff;
   overflow: hidden;
@@ -1741,7 +1755,7 @@ input, textarea { font: inherit; outline-color: var(--color-sky); }
 
 .footer__box {
   position: relative;
-  padding: 240px 52px 36px;
+  padding: 240px max(52px, calc((100% - 1512px) / 2 + 52px)) 36px;
   text-align: center;
 }
 
@@ -1787,7 +1801,7 @@ input, textarea { font: inherit; outline-color: var(--color-sky); }
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 36px;
-  padding: 56px 52px 40px;
+  padding: 56px max(52px, calc((100% - 1512px) / 2 + 52px)) 40px;
   margin-top: 44px;
   border-top: 1px solid rgba(255,255,255,0.12);
 }
@@ -1851,7 +1865,7 @@ input, textarea { font: inherit; outline-color: var(--color-sky); }
   justify-content: space-between;
   gap: 20px;
   flex-wrap: wrap;
-  padding: 20px 52px 34px;
+  padding: 20px max(52px, calc((100% - 1512px) / 2 + 52px)) 34px;
   border-top: 1px solid rgba(255,255,255,0.12);
   font-size: 12.5px;
   color: rgba(255,255,255,0.45);
