@@ -33,12 +33,15 @@
   <meta name="twitter:image" content="https://www.elektroplan.rs/assets/img/hero-sky.jpg">
 
   <!-- Fontovi i resursi -------------------------------------------------- -->
+  <link rel="icon" href="assets/img/favicon.ico" sizes="32x32">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="image" href="assets/img/hero-sky.jpg" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.css?v=2">
+  <link rel="stylesheet" href="assets/css/styles.css?v=6">
 
   <!-- Microsoft Clarity ---------------------------------------------------- -->
   <script>
@@ -321,6 +324,48 @@
         ]
       },
       {
+        "@type": "Service",
+        "@id": "https://www.elektroplan.rs/#usluga-solarna-elektrana",
+        "name": "Ugradnja solarnih panela i solarnih elektrana ključ u ruke",
+        "serviceType": "Solarna elektrana ključ u ruke",
+        "description": "Izlazak i snimanje krova bez naplate, simulacija rada, projekat, montaža sopstvenom ekipom, prijava EPS-u i dokumentacija za subvenciju, servis i monitoring.",
+        "url": "https://www.elektroplan.rs/#kako-radimo",
+        "provider": {
+          "@id": "https://www.elektroplan.rs/#organizacija"
+        },
+        "areaServed": [
+          { "@type": "Place", "name": "Kruševac" },
+          { "@type": "Place", "name": "Rasinski okrug" },
+          { "@type": "Place", "name": "Srbija" }
+        ],
+        "offers": [
+          {
+            "@type": "Offer",
+            "name": "Paket od 6.000 €",
+            "price": 6000,
+            "priceCurrency": "EUR",
+            "valueAddedTaxIncluded": true,
+            "availability": "https://schema.org/InStock"
+          },
+          {
+            "@type": "Offer",
+            "name": "Solarna elektrana 10 kWp",
+            "price": 7500,
+            "priceCurrency": "EUR",
+            "valueAddedTaxIncluded": true,
+            "availability": "https://schema.org/InStock"
+          },
+          {
+            "@type": "Offer",
+            "name": "Solarna elektrana 14 kWp",
+            "price": 9000,
+            "priceCurrency": "EUR",
+            "valueAddedTaxIncluded": true,
+            "availability": "https://schema.org/InStock"
+          }
+        ]
+      },
+      {
         "@type": "BreadcrumbList",
         "itemListElement": [
           {
@@ -427,16 +472,16 @@
           </div>
           <div class="onama__box">
             <div class="onama__box-2">
+              <span data-count="5">5</span>
+            </div>
+            <span class="onama__label">godina garancije na panele</span>
+          </div>
+          <div class="onama__box">
+            <div class="onama__box-2">
               <span data-count="2">2</span>
               MW+
             </div>
             <span class="onama__label">instalisanog kapaciteta</span>
-          </div>
-          <div class="onama__box">
-            <div class="onama__box-2">
-              <span data-count="5">6<br></span>
-            </div>
-            <span class="onama__label">godina garancije na panele</span>
           </div>
           <div class="onama__box">
             <div class="onama__box-2">
@@ -808,11 +853,14 @@
               </div>
             </div>
           </div>
-          <form data-action="submit" class="kontakt__form" method="POST" action="https://formsubmit.co/info@elektroplan.rs" novalidate="novalidate">
-            <input type="hidden" name="_subject" value="Novi upit sa sajta — Elektroplan">
-            <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="_captcha" value="false">
+          <form data-action="submit" class="kontakt__form" method="POST" action="https://api.web3forms.com/submit" novalidate="novalidate">
+            <!-- Web3Forms: nalepi svoj access key ispod (web3forms.com - Create Access Key).
+                 Dok je prazan, forma salje preko FormSubmit fallback-a iz main.js. -->
+            <input type="hidden" name="access_key" value="">
+            <input type="hidden" name="subject" value="Novi upit sa sajta — Elektroplan">
+            <input type="hidden" name="from_name" value="Elektroplan sajt">
             <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" class="kontakt__honey">
+            <input type="checkbox" name="botcheck" tabindex="-1" aria-hidden="true" style="display:none">
             <div class="kontakt__box-2">
               <label for="ime" class="kontakt__field-label">Ime i prezime</label>
               <input id="ime" name="ime" type="text" required="required" placeholder="Marko Marković" class="kontakt__ime">
@@ -885,7 +933,6 @@
         </div>
         <div class="footer__box-8">
           <span>© 2026 Elektroplan Pro d.o.o. Kruševac</span>
-          <span>Demo verzija sajta</span>
         </div>
         <div class="footer__box-9">
           <span class="footer__label-4">Elektroplan</span>
@@ -895,6 +942,6 @@
 
   <!-- Skripte ------------------------------------------------------------- -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-  <script src="assets/js/main.js?v=2" defer></script>
+  <script src="assets/js/main.js?v=5" defer></script>
 </body>
 </html>

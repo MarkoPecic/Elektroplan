@@ -274,11 +274,12 @@
   }
 
   /* 7. Kontakt forma ------------------------------------------------------ */
-  /* Šalje na FormSubmit (AJAX endpoint iz form action). Prvi put kada se
-     forma pošalje, FormSubmit šalje mejl za aktivaciju na info@elektroplan.rs
-     — treba kliknuti link u tom mejlu, posle toga upiti stižu automatski.
-     Za drugi servis (Formspree, Netlify Forms, sopstveni PHP) dovoljno je
-     zameniti action u index.html. */
+  /* Primarno: Web3Forms (action forme + hidden access_key u index.html).
+     Ako access_key nije upisan, šalje preko FormSubmit AJAX endpoint-a na
+     info@elektroplan.rs — FormSubmit prvi put pošalje mejl za aktivaciju,
+     treba kliknuti link u njemu. Za Formspree: promeni action na
+     https://formspree.io/f/XXXX i access_key ostavi prazan. */
+  var FALLBACK_ENDPOINT = 'https://formsubmit.co/ajax/info@elektroplan.rs';
   function initForm() {
     var form = document.querySelector('[data-action="submit"]');
     if (!form) return;
@@ -338,10 +339,31 @@
       say('');
 
       var data = new FormData(form);
-      var endpoint = form.getAttribute('action').replace('formsubmit.co/', 'formsubmit.co/ajax/');
+      var keyEl = form.querySelector('[name="access_key"]');
+      var key = keyEl ? keyEl.value.trim() : '';
+      var action = form.getAttribute('action') || '';
+      var endpoint = action;
+
+      if (action.indexOf('api.web3forms.com') > -1 && !key) {
+        endpoint = FALLBACK_ENDPOINT;
+        data.delete('access_key');
+        data.delete('botcheck');
+        data.delete('from_name');
+        data.delete('subject');
+        data.append('_subject', 'Novi upit sa sajta — Elektroplan');
+        data.append('_template', 'table');
+        data.append('_captcha', 'false');
+      } else if (action.indexOf('formsubmit.co') > -1) {
+        endpoint = action.replace('formsubmit.co/', 'formsubmit.co/ajax/');
+      }
 
       fetch(endpoint, { method: 'POST', body: data, headers: { Accept: 'application/json' } })
-        .then(function (r) { return r.ok ? r.json() : Promise.reject(r); })
+        .then(function (r) {
+          return r.json().then(function (j) {
+            if (!r.ok || j.success === false) return Promise.reject(j);
+            return j;
+          });
+        })
         .then(function () {
           setLabel('Primljeno — zovemo te');
           say('Upit je poslat. Odgovaramo istog radnog dana.', 'ok');

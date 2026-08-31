@@ -1644,7 +1644,7 @@ input, textarea { font: inherit; outline-color: var(--color-sky); }
   border: 1px solid rgba(255,255,255,0.16);
   border-radius: 12px;
   padding: 14px 16px;
-  font-size: 15.5px;
+  font-size: 16px;
   color: #fff;
 }
 
@@ -1658,7 +1658,7 @@ input, textarea { font: inherit; outline-color: var(--color-sky); }
   border: 1px solid rgba(255,255,255,0.16);
   border-radius: 12px;
   padding: 14px 16px;
-  font-size: 15.5px;
+  font-size: 16px;
   color: #fff;
   font-family: inherit;
   resize: vertical;
@@ -1938,3 +1938,21 @@ input, textarea { font: inherit; outline-color: var(--color-sky); }
     [data-hero-inner] .no-op, [data-hero-inner] a { font-size: 15.5px !important; }
     footer > div:first-child { padding-top: 140px !important; }
   }
+
+
+/* onama: dve kolone */
+@media (min-width: 820px) {
+  .onama__split { grid-template-columns: 150px minmax(0, 1fr); gap: 28px; }
+  .onama__box-3 {
+    max-width: none;
+    display: grid;
+    grid-template-columns: minmax(0, 2.15fr) minmax(0, 1fr);
+    column-gap: 52px;
+    align-items: start;
+  }
+  .onama__text { max-width: 100%; text-wrap: pretty; }
+  .onama__text-2 { margin: 8px 0 0; max-width: none; text-wrap: pretty; }
+}
+@media (min-width: 1440px) {
+  .onama__box-3 { grid-template-columns: minmax(0, 2.5fr) minmax(0, 1fr); column-gap: 64px; }
+}
