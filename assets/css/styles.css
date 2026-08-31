@@ -435,7 +435,7 @@ html, body { overflow-x: clip; }
 .hero__social {
   position: absolute;
   z-index: 3;
-  right: 56px;
+  right: max(56px, calc(50% - 700px));
   bottom: 52px;
   display: flex;
   gap: 10px;
@@ -475,11 +475,11 @@ html, body { overflow-x: clip; }
 
 @media (min-width: 1400px) {
   .hero__hero-inner {
-    justify-content: center;
+    justify-content: space-between;
     gap: clamp(56px, 9vh, 130px);
     padding-top: clamp(180px, 19vh, 280px);
-    padding-bottom: clamp(52px, 9vh, 120px);
   }
+  .hero__hero-row { margin-top: auto; }
 }
 
 .hero__box-5 {
